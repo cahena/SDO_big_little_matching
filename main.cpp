@@ -1,10 +1,9 @@
 
 #include <iostream>
 #include <string>
-#include <vector> 
+#include <vector>
 
 using namespace std;
-
 
 struct Little;
 struct Big;
@@ -16,7 +15,7 @@ class Little
     string name;
     vector<string> pref_survey;
     bool free = true;
-    Big* curr_pair1;
+    string curr_pair = "n/a";
 
     public:
 //CONSTRUCTOR:
@@ -26,18 +25,27 @@ class Little
         }
 
 //FUNCTIONS:
-string get_name()
-{
-    return name;
-}
-vector<string> get_pref_survey()
-{
-    return pref_survey;
-}
-bool get_free()
-{
-    return free;
-}
+    string get_name()
+    {
+        return name;
+    }
+    vector<string> get_pref_survey()
+    {
+        return pref_survey;
+    }
+    bool get_free()
+    {
+        return free;
+    }
+    string get_pair()
+    {
+        return curr_pair;
+    }
+    void set_curr_pair(string bigs_name)
+    {
+        cout<< "\nset_curr_pair() called." <<endl;
+        curr_pair = bigs_name; 
+    }
 //input: true or false.
 //result: Update free status.
     void change_free_status(bool new_status) {
@@ -53,8 +61,8 @@ class Big
     string name;
     vector<string> pref_survey;
     int matches = 0;
-    string curr_pair1;
-    string curr_pair2;
+    string curr_pair1 = "n/a";
+    string curr_pair2 = "n/a";
 
     public:
 //CONSTRUCTOR:
@@ -77,7 +85,7 @@ class Big
     }
     void set_curr_pair1(string littles_name)
     {
-        cout<< "\nset_pair1() called." <<endl;
+        cout<< "\nset_curr_pair1() called." <<endl;
         curr_pair1 = littles_name; 
     }
 //input: Name that is being searched for.
@@ -123,10 +131,17 @@ void clean_data(vector<Big>& bigs, vector<Little>& littles)
 
 void pair_little_big(Little& lil, Big& big)
 {
+    // Check if the Big is already paired with another little
+    if (big.get_pair() != "n/a") {
+        cout << "Big is already paired with " << big.get_pair() << ". Cannot pair with " << lil.get_name() << endl;
+        return;
+    }
+
     cout<< "\nPAIRED inside pair_little_big func: " << lil.get_name() << " - " << big.get_name() <<endl;
 
     // Update Little
     lil.change_free_status(false);
+    lil.set_curr_pair(big.get_name());
 
     // Update Big
     big.change_matches_status(1);
@@ -139,10 +154,11 @@ void unpair_little_big(Little& lil, Big& big)
     cout<< "\nUN-PAIRED inside unpair_little_big func: " << lil.get_name() << " - " << big.get_name() <<endl;
     // Update Little
     lil.change_free_status(true);
+    lil.set_curr_pair("n/a");
 
     // Update Big
     big.change_matches_status(-1);
-    big.set_curr_pair1(""); 
+    big.set_curr_pair1("n/a"); 
 }
 
 // Function that matchs Bigs and Littles:
@@ -185,7 +201,7 @@ void match_bigs_littles(vector<Big>& bigs, vector<Little>& littles)
                     cout << "\nBig has less than 1 match." << endl;
                     pair_little_big(littles[i], bigs[proposed_big_int]);
                     changes_made = true;
-                    break;  // Break the loop after pairing so that there's no further iterations for this little
+                    break; // Break the loop after pairing so that there's no further iterations for this little
                 }
                 else
                 {// If Big already has a match, compare Big's preferences:
@@ -200,7 +216,7 @@ void match_bigs_littles(vector<Big>& bigs, vector<Little>& littles)
                         pair_little_big(littles[i], bigs[proposed_big_int]);
                         changes_made = true;
                         cout << "The bigs current pair is: " << bigs[proposed_big_int].get_pair() << endl;
-                        break;  // Break the loop after unpairing and pairing to avoid further iterations for this little
+                        break; // Break the loop after unpairing and pairing to avoid further iterations for this little
                     }
                 }
             }
@@ -228,8 +244,19 @@ int main()
 
     match_bigs_littles(bigs, littles);
 
-
+    cout<< "\n--LITTLE PAIRS--" <<endl;
+    for (int i = 0; i < littles.size(); i++)
+    {
+        cout<< littles[i].get_name() << "--" << littles[i].get_pair() <<endl;
+    }
+    cout<< "\n--BIG PAIRS--" <<endl;
+    for (int i = 0; i < bigs.size(); i++)
+    {
+        cout<< bigs[i].get_name() << "--" << bigs[i].get_pair() <<endl;
+    }
 
 
     return 0; 
 }
+
+
