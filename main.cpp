@@ -227,6 +227,40 @@ void match_bigs_littles(vector<Big>& bigs, vector<Little>& littles)
 
 int main()
 {
+/*
+-- See How the Program Works --
+Simply, run the following commands into a terminal that is compatible with c++:
+$ g++ main.cpp -o main -std=c++11
+$ main
+
+You will see the code for sorting the Example Bigs and Littles objects. 
+The code will print out some messages to indicate what decisions are being made, 
+then it will display all the Little's pairs, as well as all the Big's pairs. 
+
+
+-- Test Your Own Data Set --
+WARNING: Follow c++ syntax and pay attention to "Notes" or else you may encounter errors!
+
+Replace the names inside the quotation-marks with you own data. 
+
+Template: 
+{"Big_name", {"Little_name", ... }}
+
+Add more Bigs or Littles by copying the Template. 
+{ Template, 
+  Template, 
+  ... };
+
+Note: All Big's or Little's lists must have the same number of people, but
+they can all have a different number of people in their lists than in the Example. 
+
+Save your updated code and run the following commands on a terminal that is 
+compatible with c++:
+$ g++ main.cpp -o main -std=c++11
+$ main
+
+*/
+    // Example Bigs and Littles objects:
     vector<Big> bigs = {{"Big1", {"Little3", "Little4", "Little2"}},
                         {"Big2", {"Little2", "Little4", "Little3"}},
                         {"Big3", {"Little1", "Little3", "Little2"}},
@@ -258,5 +292,4 @@ int main()
 
     return 0; 
 }
-
 
